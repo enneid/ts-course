@@ -1,39 +1,22 @@
-// const path = require("path");
-
-// module.exports = {
-//   entry: "./app/assets/scripts/index.js",
-//   output: {
-//     path: path.resolve(__dirname, "app"),
-//     filename: "bundle.js",
-//   },
-//   mode: "development",
-//   module: {
-//     rules: [
-//       {
-//         test: /\.scss$/i,
-//         use: ["style-loader", "css-loader"],
-//       },
-//     ],
-//   },
-//   devServer: {
-//     port: 3000,
-//     static: {
-//       directory: path.join(__dirname, "app"),
-//     },
-//   },
-// };
-
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-  // HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin =  require("copy-webpack-plugin");
   const path = require('path');
   const webpack = require('webpack')
+
 
 module.exports = {
   plugins: [
     new MiniCssExtractPlugin(),
     new webpack.ProvidePlugin({
       p5: 'p5'
-    })//,
+    }),
+    new CopyPlugin({
+      patterns: [
+        {from: "*.html", to: path.resolve(__dirname, 'dist'),  context: "src/"  }
+      ],
+     
+    })
+    //,
    // new HtmlWebpackPlugin({ title: "Contact App" }),
   ],
   entry: ["./src/app.ts", "./src/styles.scss"],
@@ -45,10 +28,10 @@ module.exports = {
   devtool: "source-map",
   module: {
     rules: [
-      {
-        test: /\.html$/i,
-        loader: "html-loader",
-      },
+      // {
+      //   test:  /\.(html)$/,
+      //   loader: "file?name=[path][name].[ext]&context=./dist",
+      // },
       {
         test: /\.ts$/,
         use: "ts-loader",
